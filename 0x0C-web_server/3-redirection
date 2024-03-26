@@ -6,7 +6,7 @@
 #++    at the root with a curl GET request.
 
 # Updates the package lists for available software packages.
-sudo apt-get update
+sudo apt-get update -y
 # Installs the Nginx web server.
 sudo apt-get install -y nginx
 
@@ -43,4 +43,4 @@ server {
 EOF'
 
 # Enable the new site configuration
-sudo ln -s /etc/nginx/sites-available/redirect /etc/nginx
+sudo ln -s /etc/nginx/sites-available/redirect /etc/nginx/sites-enabled/
