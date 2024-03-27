@@ -1,32 +1,41 @@
 #!/usr/bin/env bash
-# Configures a new ubuntu machine by installing
-# Nginx where it should be listening on port 80
-# Serve a page that would return a Hello World string
-#
 
+# Configures Nginx to redirect /redirect_me to another page with a 301 Moved Permanently
+
+# Update and install Nginx
 echo -e "Updating and installing Nginx.\n"
 sudo apt-get update -y -qq && \
-	 sudo apt-get install nginx -y
+    sudo apt-get install nginx -y
 
-echo -e "\nSetting up some minor stuff.\n"
+# Set up redirection configuration
+echo -e "\nConfiguring redirection.\n"
 
-# starting nginx service
-sudo service nginx start
+sudo bash -c 'cat << EOF > /etc/nginx/sites-available/redirect
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
 
-# allowing nginx on firewall
-sudo ufw allow 'Nginx HTTP'
+    # Redirect /redirect_me to another page with a 301 Moved Permanently
+    location /redirect_me {
+        return 301 https://example.com/redirected_page;
+    }
 
-# Give the user ownership to website files for easy editing
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
+    # Serve a default Hello World page
+    root /var/www/html;
+    index index.html index.htm;
 
-# Backup default index
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+EOF'
 
-# Creating new index
-echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
+# Enable the redirection site configuration
+sudo ln -s /etc/nginx/sites-available/redirect /etc/nginx/sites-enabled/
 
-# Restarting nginx
-sudo service nginx restart
+# Test Nginx configuration and restart
+echo -e "\nTesting Nginx configuration and restarting Nginx.\n"
+sudo nginx -t && sudo service nginx restart
 
-echo -e "\nCompleted. ✅\n"
+echo -e "\nRedirection configuration completed. ✅\n"
