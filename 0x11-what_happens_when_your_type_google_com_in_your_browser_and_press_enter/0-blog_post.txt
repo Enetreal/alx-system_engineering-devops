@@ -81,3 +81,4 @@ Another crucial component in the client-server computing environment is the data
 
 Conclusion
 All of this steps, sending and recieving data and responses happens in a very short time, even before we notice. But anytime we type www.google.com, all this steps must happen. I hope this article helps you get a better understanding of the processes involved when we type www.google.com.
+https://medium.com/@wizzarddguru/to-answer-this-question-in-a-simple-and-detailed-manner-lets-take-a-look-at-this-word-called-cbd8aeaf7118
