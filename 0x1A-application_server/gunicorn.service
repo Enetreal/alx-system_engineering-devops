@@ -1,0 +1,5 @@
+[Unit]
+Description=Gunicorn service for your_project_directory
+After=network.target
+
+[Service]
