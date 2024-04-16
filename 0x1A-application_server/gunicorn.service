@@ -3,3 +3,11 @@ Description=Gunicorn service for your_project_directory
 After=network.target
 
 [Service]
+User=your_username
+Group=your_groupname
+WorkingDirectory=/path/to/your_project_directory
+ExecStart=/path/to/your_virtualenv/bin/gunicorn --workers 3 --bind unix:/path/to/your_gunicorn_socket_or_port your_module_name:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
